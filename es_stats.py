@@ -60,7 +60,7 @@ def runnable(es, index, lock_ttl):
 
 
 def format4graphite(d, parent_key='', sep='.'):
-    """Flatten dicts when nested"""
+    """Format graphite datasource name"""
     items = []
     for key, v in d.items():
         k = sub('\.', '_', key)
@@ -110,7 +110,7 @@ def main():
 
         for d in stats:
             for k, v in d.iteritems():
-                if isinstance(v, int):
+                if isinstance(v, int) and not v < 0:
                     metrics = 'elasticsearch.{}.{} {} {}'.format(cluster_name, k, v, int(time.time()))
                     log.debug(metrics)
                     try:
